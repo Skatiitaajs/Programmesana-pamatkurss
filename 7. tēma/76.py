@@ -1,5 +1,7 @@
 """Skaitļa minēšanas spēle ar bināro meklēšanu."""
 
+from argparse import ArgumentParser
+
 
 def aprekinat_minejumu(apaksa, augsa):
     """Atgriež iespējamā diapazona vidējo veselo skaitli."""
@@ -22,6 +24,7 @@ def nolasit_atbildi(minejums):
 
 def spelet(apaksa=1, augsa=100):
     """Vada spēli, skaita minējumus un pamana pretrunīgas atbildes."""
+    iespeju_skaits = augsa - apaksa + 1
     print("Koda lauzējs: AI efektivitāte")
     print(f"Iedomājies veselu skaitli no {apaksa} līdz {augsa}.")
     print("Pašu skaitli neievadi. Atbildi uz datora minējumiem:")
@@ -46,6 +49,8 @@ def spelet(apaksa=1, augsa=100):
         if atbilde == "pareizi":
             print(f"Uzminēju! Tavs skaitlis ir {minejums}.")
             print(f"Minējumu skaits: {minejumi}.")
+            print(f"Lineārajai meklēšanai sliktākajā gadījumā vajadzētu "
+                  f"{iespeju_skaits} minējumu.")
             break
         elif atbilde == "lielaks":
             apaksa = minejums + 1
@@ -54,4 +59,10 @@ def spelet(apaksa=1, augsa=100):
 
 
 if __name__ == "__main__":
-    spelet()
+    parseris = ArgumentParser(description="Dators min spēlētāja skaitli.")
+    parseris.add_argument(
+        "augsa", nargs="?", type=int, default=100, choices=(100, 1000),
+        help="diapazona augšējā robeža (noklusējums: 100)",
+    )
+    argumenti = parseris.parse_args()
+    spelet(augsa=argumenti.augsa)
